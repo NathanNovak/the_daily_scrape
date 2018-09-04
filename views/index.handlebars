@@ -1,0 +1,43 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+	{{!-- <a class="navbar-brand" href="#">Navbar</a> --}}
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
+	 aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+		<div class="navbar-nav">
+			<a class="nav-item nav-link active" href="/">Home <span class="sr-only">(current)</span></a>
+			<a class="nav-item nav-link" href="/saved">Saved Articles</a>
+			<a class="nav-item nav-link" id="scrape">SCRAPE!</a>
+		</div>
+	</div>
+</nav>
+<div class="header jumbotron">
+	<h1> Daily Scrape!</h1>
+</div>
+
+
+<div class="jumbotron jumbotron-fluid">
+	{{!-- <div id="articles" class="container">
+		{{#each articles}}
+		<p>{{this.title}} (ID: {{this.id}})</p><br> {{/each}}
+	</div> --}}
+	<div id="articles">
+			
+		{{!-- <div class="card-body">	{{#each articles}}
+			<h5 class="card-title">{{this.link}}</h5> 
+			
+			<h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+			<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+			<a href="#" class="card-link">Card link</a>
+			<a href="/save" class="card-link">Save Article</a>
+			{{/each}}
+		</div> --}}
+		
+	</div>
+	{{!--
+	<div>
+		<textarea id="note" type="text"></textarea>
+		<button type="submit" id="submit">Submit</button>
+	</div> --}}
+</div>

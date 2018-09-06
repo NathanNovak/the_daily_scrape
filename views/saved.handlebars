@@ -6,8 +6,8 @@
 	</button>
 	<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 		<div class="navbar-nav">
-			<a class="nav-item nav-link active" href="/">Home <span class="sr-only">(current)</span></a>
-			<a class="nav-item nav-link" href="/saved">Saved Articles</a>
+			<a class="nav-item nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+			<a class="nav-item nav-link active" href="/saved">Saved Articles</a>
 			<a class="nav-item nav-link" id="scrape">SCRAPE!</a>
 		</div>
 	</div>
@@ -17,27 +17,64 @@
 </div>
 
 
-<div class="jumbotron jumbotron-fluid">
-	{{!-- <div id="articles" class="container">
+<div class="container-fluid">
+	<div id="saved-articles" class="card">
 		{{#each articles}}
-		<p>{{this.title}} (ID: {{this.id}})</p><br> {{/each}}
-	</div> --}}
-	<div id="articles">
-			
-		{{!-- <div class="card-body">	{{#each articles}}
-			<h5 class="card-title">{{this.link}}</h5> 
-			
+		<div id="{{this._id}}" class="card">
+			<div class="card-header">
+				<h4> <a href='http://www.tucson.com/ {{this.link}}' target="blank" class="card-link">{{this.title}}</a>
+					<span>
+						<button id="{{this._id}}" class="delete btn btn-primary">Delete</button>
+						<!-- Button trigger modal -->
+						<button id="{{this._id}}" type="button" class="addNote btn btn-primary" data-toggle="modal" data-target="#note">
+							Add Note
+						</button>
+						{{!-- <button id="{{this._id}}" class="addNote btn btn-primary">Add Note</button> --}}
+					</span>
+				</h4>
+			</div>
+		</div>
+		{{/each}} {{!--
+		<div class="card-body"> {{#each articles}}
+			<h5 class="card-title">{{this.link}}</h5>
+
 			<h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
 			<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
 			<a href="#" class="card-link">Card link</a>
 			<a href="/save" class="card-link">Save Article</a>
 			{{/each}}
 		</div> --}}
-		
+
 	</div>
 	{{!--
 	<div>
 		<textarea id="note" type="text"></textarea>
 		<button type="submit" id="submit">Submit</button>
 	</div> --}}
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="note" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="noteTitle">Add a Note</h5>
+				
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<h3>{{this.title}}</h3>
+				<textarea rows="10" class="note-modal"></textarea>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button id="{{this._id}}" type="button" class="save-note btn btn-primary">Save changes</button>
+				<button id="{{this._id}}" class="delete-note btn btn-primary">Delete Note</button>
+			</div>
+		</div>
+	</div>
 </div>

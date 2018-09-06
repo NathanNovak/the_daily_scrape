@@ -11,13 +11,13 @@ var db = require("../models");
 
 router.get("/", function(req, res) {
 
-	db.Article.find(function(err, articles) {
-		if (err) throw err;
-		else {
-		}
+	db.Article.find({saved: false}).then(function(dbArticles) {
+				
+		console.log("Unsaved Articles", dbArticles);
+		res.render('index', {articles: dbArticles});
 	})
-	res.render('index');
 })
+
 
 router.get("/scrape", function(req, res) {
 
@@ -27,7 +27,7 @@ router.get("/scrape", function(req, res) {
 		var $ = cheerio.load(response.data);
 
 		var numNewArticles = 0;
-	
+
 		// console.log("Response", response.data);
 		// Now, we grab every h2 within an article tag, and do the following:
 		$("h4.tnt-headline").each(function(i, element) {
@@ -65,11 +65,11 @@ router.get("/scrape", function(req, res) {
 				}
 			})
 
-				// Create a new Article using the `result` object built from scraping
-				// .catch(function(err) {
-				// 	// If an error occurred, send it to the client
-				// 	return res.json(err);
-				// });
+			// Create a new Article using the `result` object built from scraping
+			// .catch(function(err) {
+			// 	// If an error occurred, send it to the client
+			// 	return res.json(err);
+			// });
 		})
 
 		// If we were able to successfully scrape and save an Article, send a message to the client
@@ -95,29 +95,49 @@ router.get("/articles/:id", function(req, res) {
 	})
 })
 
-// router.get("/saved", function(req, res){
-// 	db.Article.find(function(err, docs) {
-// 		// console.log("DOCS", docs);
-// 		res.json(docs);
-// 	})	
-// })
+router.post("/articles/:id", function (req, res){
+console.log("Note", req.body);
 
-router.get("/saved/:id", function(req, res){
-	var request = req.body;
-
-	console.log("HEHEHE", request)
-	db.Article.findOneAndUpdate(_id, {$set: {saved: true}}, function(err, doc){
-		if (err) throw err;
-		else {
-			console.log(doc);
-
-			// db.Saved.create(doc).then(function(dbSaved){
-			// 	console.log("Saved to Saved DB:", dbSaved);
-
-			// })
-		}
+	db.Notes.create(req.body).then(function (dbNote){
+		console.log(dbNote);
 	})
 })
 
+router.get("/saved", function(req, res) {
+	db.Article.find({saved: true}).then(function(dbArticles) {
+		console.log("DOCS with value of true", dbArticles);
+
+		res.render("saved", {articles: dbArticles});
+	})
+})
+
+router.get("/saved/:id", function(req, res) {
+	var request = req.params.id;
+	var id = {_id: request}
+	db.Article.findOneAndUpdate(id, {$set: {saved: true}}, function(err, doc) {
+		if (err) throw err;
+		else {
+			// console.log("HEHEHE", request)
+			res.json(doc)
+		}
+		console.log("SAVED VALUE", doc);
+	})
+
+})
+
+// Delete the article from the DB
+router.get("/delete/:id", function(req, res) {
+	var request = req.params.id;
+	var id = {_id: request}
+	db.Article.findOneAndDelete(id, function(err, doc) {
+		if (err) throw err;
+		else {
+			// console.log("HEHEHE", request)
+			res.json(doc)
+		}
+		console.log("Deleted VALUE", doc);
+	})
+
+})
 
 module.exports = router;

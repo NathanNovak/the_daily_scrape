@@ -17,24 +17,30 @@
 </div>
 
 
-<div class="jumbotron jumbotron-fluid">
-	{{!-- <div id="articles" class="container">
+<div class="container-fluid">
+	{{!-- <div id="articles" class="card"> --}}
 		{{#each articles}}
-		<p>{{this.title}} (ID: {{this.id}})</p><br> {{/each}}
-	</div> --}}
-	<div id="articles">
-			
-		{{!-- <div class="card-body">	{{#each articles}}
-			<h5 class="card-title">{{this.link}}</h5> 
-			
+		<div id="{{this._id}}" class="card">
+			<div class="card-header">
+				<h3> <a href='http://www.tucson.com/ {{this.link}}' target="blank" class="card-link">{{this.title}}</a>
+					<button id="{{this._id}}" class="save btn btn-primary">Save</button> 
+				</h3>
+			</div>
+		</div>
+		{{/each}}
+		{{!--
+		<p>The article's id: {{this._id}}</p> --}} {{!--
+		<div class="card-body"> {{#each articles}}
+			<h5 class="card-title">{{this.link}}</h5>
+
 			<h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
 			<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
 			<a href="#" class="card-link">Card link</a>
 			<a href="/save" class="card-link">Save Article</a>
 			{{/each}}
 		</div> --}}
-		
-	</div>
+
+	{{!-- </div> --}}
 	{{!--
 	<div>
 		<textarea id="note" type="text"></textarea>

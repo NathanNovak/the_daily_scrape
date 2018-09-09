@@ -10,3 +10,8 @@
 .note-modal{
 	width: 100%;
 }
+.action-btn{
+    float: right;
+    width: 180px;
+    margin-left: 10px;
+}

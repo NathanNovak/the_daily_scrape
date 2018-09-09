@@ -56,15 +56,14 @@ router.get("/scrape", function(req, res) {
 						// View the added result in the console
 						console.log("Added to DB:", dbArticle.title);
 						console.log("Number of new articles:", numNewArticles);
-
-						db.Article.countDocuments({}, function(err, count) {
-							if (err) throw err;
-							else console.log('there are %d articles in DB', count);
-						});
+						// db.Article.countDocuments({}, function(err, count) {
+						// 	if (err) throw err;
+						// 	else console.log('there are %d articles in DB', count);
+						// });		
+						res.send("Scrape Complete");
 					})
 				}
 			})
-
 			// Create a new Article using the `result` object built from scraping
 			// .catch(function(err) {
 			// 	// If an error occurred, send it to the client
@@ -73,7 +72,7 @@ router.get("/scrape", function(req, res) {
 		})
 
 		// If we were able to successfully scrape and save an Article, send a message to the client
-		res.send("Scrape Complete");
+	
 	});
 });
 
@@ -89,10 +88,14 @@ router.get("/articles/:id", function(req, res) {
 
 	db.Article.findOne({
 		_id: req.params.id
-	}).then(function(article) {
+	}).populate("note")
+	.then(function(article) {
 		console.log("ARTICLE", article);
 		res.json(article);
-	})
+	})  .catch(function(err) {
+		// If an error occurred, send it to the client
+		res.json(err);
+	});
 })
 
 router.post("/articles/:id", function (req, res){
@@ -100,6 +103,11 @@ console.log("Note", req.body);
 
 	db.Notes.create(req.body).then(function (dbNote){
 		console.log(dbNote);
+		return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
+	}).then(function(dbArticle){
+		res.json(dbArticle);
+	}).catch(function(err){
+		console.log(err);
 	})
 })
 
@@ -137,7 +145,21 @@ router.get("/delete/:id", function(req, res) {
 		}
 		console.log("Deleted VALUE", doc);
 	})
+})
 
+// Delete the note from the DB
+router.get("/delete-note/:id", function(req, res) {
+	var request = req.params.id;
+	console.log("request", request)
+	var id = {_id: request}
+	db.Notes.findOneAndDelete(id, function(err, doc) {
+		if (err) throw err;
+		else {
+			console.log("HEHEHE", doc)
+			res.json(doc)
+		}
+		console.log("Deleted VALUE", doc);
+	})
 })
 
 module.exports = router;

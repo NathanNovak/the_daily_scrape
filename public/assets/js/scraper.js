@@ -53,26 +53,112 @@ $(document).ready(function() {
 		})
 	})
 
-	$('.save-note').on('click', function(evt){
-		console.log("clicked", evt);
+	// $('.save-note').on('click', function(evt){
+	// 	console.log("clicked", evt);
 
-		$.ajax({
-			method: 'POST',
-			url: "/articles/"+ evt.target.id
-		}).then(function(){
-			console.log("Note Added")
-			// location.reload();
-		})
-	})
+	// 	$.ajax({
+	// 		method: 'POST',
+	// 		url: "/articles/"+ evt.target.id
+	// 	}).then(function(){
+	// 		console.log("Note Added")
+	// 		// location.reload();
+	// 	})
+	// })
 
 	$('#scrape').on('click', function() {
+		console.log("Befire")
 
 		$.ajax({
 			method: 'GET',
 			url: "/scrape"
 		}).then(function() {
-			location.reload();			
+			console.log("HAHAHA")
+			window.location.reload(true);			
+		}).catch(function (err) {
+			console.log(err);
 		})
 	})
+
+	$('#note').on('shown.bs.modal', function () {
+		$('.save-note').on('click', function(evt){
+			// console.log(evt)
+			$.ajax({
+				method: 'GET',
+				url: "/articles/" 
+			}).then(function(data){
+				// console.log("Note Added", data)
+				// location.reload();
+			})
+		})
+
+		$('')
+	})
+
+	$('.addNote').on('click', function (){
+		var id = $(this).attr('id');
+		$.ajax({
+			method: 'GET',
+			url: "/articles/" + id 
+		}).then(function(data){
+			console.log("Note Added", data)
+			$('#note-title').html(data.title);
+			$('#modal-save').attr('data-id', id)
+			$('#modal-title').html(data.note)
+			// location.reload();
+		})
+	})
+
+	$('#modal-save').on('click', function(){
+		
+		var thisId = $(this).attr("data-id");
+		console.log("This Id", thisId);
+
+		$.ajax ({
+			method: "POST",
+			url: "/articles/" +thisId,
+			data: {
+				title: $('#note-add-title').val(),
+				body: $('#note-body').val()
+			}
+		}).then(function(data){
+			console.log("Saved Note", data);
+			$('#note').empty();
+			$('#note-add-title').val("")
+			$('#note-body').val("")
+			location.reload();
+		})
+	})
+
+	$('.viewNote').on('click', function(){
+		var id = $(this).attr('id');
+		console.log("VIEW ID", id)
+		$.ajax({
+			method: 'GET',
+			url: "/articles/" +id
+		}).then(function(note){
+			console.log("NOTES DATA", note.note);
+			$('#delete-note').attr('data-id', id)
+			$('#view-note-title').html(note.note.title)
+			$('#view-note-body').html(note.note.body)
+		})
+	})
+
+
+	// having trouble deleting the note
+	$('#delete-note').on('click', function (evt){
+		// console.log("clicked", evt.target.id);
+		var id = $(this).attr('data-id');
+		console.log(id);
+		$.ajax({
+			method: 'GET',
+			url: "/articles/"+ id
+		}).then(function(data){
+
+			console.log("Note deleted!", data)
+			// location.reload();
+		})
+		
+	})
+
 })
 

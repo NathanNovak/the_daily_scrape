@@ -16,7 +16,6 @@
 	<h1> Daily Scrape!</h1>
 </div>
 
-
 <div class="container-fluid">
 	<div id="saved-articles" class="card">
 		{{#each articles}}
@@ -24,56 +23,64 @@
 			<div class="card-header">
 				<h4> <a href='http://www.tucson.com/ {{this.link}}' target="blank" class="card-link">{{this.title}}</a>
 					<span>
-						<button id="{{this._id}}" class="delete btn btn-primary">Delete</button>
 						<!-- Button trigger modal -->
-						<button id="{{this._id}}" type="button" class="addNote btn btn-primary" data-toggle="modal" data-target="#note">
+						<button id="{{this._id}}" type="button" class="addNote action-btn btn btn-primary" data-toggle="modal" data-target="#note">
 							Add Note
 						</button>
-						{{!-- <button id="{{this._id}}" class="addNote btn btn-primary">Add Note</button> --}}
+						<button id="{{this._id}}" type="button" class="viewNote action-btn btn btn-primary" data-toggle="modal" data-target="#view-note">
+							View Notes
+						</button>
+						<button id="{{this._id}}" class="delete action-btn btn btn-primary">Delete Article</button>
 					</span>
 				</h4>
 			</div>
 		</div>
-		{{/each}} {{!--
-		<div class="card-body"> {{#each articles}}
-			<h5 class="card-title">{{this.link}}</h5>
-
-			<h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-			<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-			<a href="#" class="card-link">Card link</a>
-			<a href="/save" class="card-link">Save Article</a>
-			{{/each}}
-		</div> --}}
-
+		{{/each}}
 	</div>
-	{{!--
-	<div>
-		<textarea id="note" type="text"></textarea>
-		<button type="submit" id="submit">Submit</button>
-	</div> --}}
 </div>
 
-
-
-<!-- Modal -->
+<!--Add Note Modal -->
 <div class="modal fade" id="note" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="noteTitle">Add a Note</h5>
-				
+				<h5 class="modal-title" id="note-title"></h5>
+
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
-				<h3>{{this.title}}</h3>
-				<textarea rows="10" class="note-modal"></textarea>
+				<label>Title</label>
+				<input id="note-add-title"></input>
+				<textarea id="note-body" rows="10" class="note-modal" placeholder="Add text here"></textarea>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button id="{{this._id}}" type="button" class="save-note btn btn-primary">Save changes</button>
-				<button id="{{this._id}}" class="delete-note btn btn-primary">Delete Note</button>
+				<button data-id="" id="modal-save" type="button" class="save-note btn btn-primary" data-dismiss="modal">Save changes</button>
+				{{!-- <button data-id="" class="delete-note btn btn-primary">Delete Note</button> --}}
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--View Note Modal -->
+<div class="modal fade" id="view-note" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="noteTitle"></h5>
+
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<h5 id="view-note-title">No note found</h5>
+				<p id="view-note-body" class="note-modal"></p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 			</div>
 		</div>
 	</div>

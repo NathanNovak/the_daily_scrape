@@ -131,34 +131,40 @@ $(document).ready(function() {
 
 	$('.viewNote').on('click', function(){
 		var id = $(this).attr('id');
-		console.log("VIEW ID", id)
+		console.log("VIEW ID", id);
 		$.ajax({
 			method: 'GET',
 			url: "/articles/" +id
 		}).then(function(note){
-			console.log("NOTES DATA", note.note);
-			$('#delete-note').attr('data-id', id)
-			$('#view-note-title').html(note.note.title)
-			$('#view-note-body').html(note.note.body)
+			if (note.note){
+				console.log("NOTES DATA", note);
+				$('#delete-note').attr('data-id', id);
+				$('#view-note-title').html(note.note.title);
+				$('#view-note-body').html(note.note.body);
+			}
+			else {
+				$('#view-note-title').html("No Note");
+				$('#view-note-body').html("");
+			}
 		})
 	})
 
 
 	// having trouble deleting the note
-	$('#delete-note').on('click', function (evt){
-		// console.log("clicked", evt.target.id);
-		var id = $(this).attr('data-id');
-		console.log(id);
-		$.ajax({
-			method: 'GET',
-			url: "/articles/"+ id
-		}).then(function(data){
+	// $('#delete-note').on('click', function (evt){
+	// 	// console.log("clicked", evt.target.id);
+	// 	var id = $(this).attr('data-id');
+	// 	console.log(id);
+	// 	$.ajax({
+	// 		method: 'GET',
+	// 		url: "/articles/"+ id
+	// 	}).then(function(data){
 
-			console.log("Note deleted!", data)
-			// location.reload();
-		})
+	// 		console.log("Note deleted!", data)
+	// 		// location.reload();
+	// 	})
 		
-	})
+	// })
 
 })
 
